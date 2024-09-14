@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 5b27872ad08b21242985dbc8320c1082
   m_currentHash:
     serializedVersion: 2
-    Hash: c6ea35c7ad9d4e5bd6ba2131130d4a41
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -38,7 +38,7 @@ MonoBehaviour:
     m_Id: 
   m_RemoteCatalogLoadPath:
     m_Id: 
-  m_ContentStateBuildPathProfileVariableName: 
+  m_ContentStateBuildPathProfileVariableName: <default settings path>
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 0
@@ -46,6 +46,9 @@ MonoBehaviour:
   m_GroupAssets:
   - {fileID: 11400000, guid: f1ae3c589a52a80499fd4eef8e3470a5, type: 2}
   - {fileID: 11400000, guid: 0e30f4c3dbbf7024098f0c49807bb5b2, type: 2}
+  - {fileID: 11400000, guid: 3e60f3709d5465445990fbe53a420dc3, type: 2}
+  - {fileID: 11400000, guid: e4b235d5cf0329644bb22a23625f8bce, type: 2}
+  - {fileID: 11400000, guid: 334e6625624cc8b47aa9ef95f6047be3, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -84,7 +87,7 @@ MonoBehaviour:
       - m_Id: d3dcdbe676748e04ea77db2e36e7c3bb
         m_Value: ServerData/[BuildTarget]
       - m_Id: 8c6ba22f47fd1ab4d84c5734f7675b50
-        m_Value: https://unity.com/{UnityEditor.PlayerSettings.productName}/[RemoteHost]_[BuildTarget]
+        m_Value: https://unity.com/LoadyDungeons/[RemoteHost]_[BuildTarget]
     - m_InheritedParent: 
       m_Id: b9704566de43a6949924df271ab47007
       m_ProfileName: Test
@@ -143,6 +146,8 @@ MonoBehaviour:
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 32357a2b3e504bd4db791ec2a1d8eb7c, type: 2}
+  - {fileID: 11400000, guid: 84b2687590a7dfe418561e64a7f175a3, type: 2}
+  - {fileID: 11400000, guid: e4699e5b4bddcb842b26c049ba8909e3, type: 2}
   m_InitializationObjects: []
   m_CertificateHandlerType:
     m_AssemblyName: 
