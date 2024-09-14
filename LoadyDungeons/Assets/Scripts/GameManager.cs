@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using System;
+using UnityEngine.ResourceManagement.ResourceProviders;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     private AssetReferenceSprite m_LogoAssetReference;
 
     private AsyncOperationHandle<Sprite> m_LogoLoadOpHadle;
+
+    private static AsyncOperationHandle<SceneInstance> m_SceneLoadOpHandle;
 
     public static GameManager Instance {get; private set;}
     
@@ -81,7 +83,11 @@ public class GameManager : MonoBehaviour
 
     public static void LoadNextLevel()
     {
-        SceneManager.LoadSceneAsync("LoadingScene");
+        // we will change the scene loading type to addressable system
+        //SceneManager.LoadSceneAsync("LoadingScene");
+
+        m_SceneLoadOpHandle = Addressables.LoadSceneAsync("LoadingScene", activateOnLoad: true);
+
     }
 
     public static void LevelCompleted()
