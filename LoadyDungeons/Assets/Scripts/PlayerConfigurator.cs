@@ -16,8 +16,11 @@ public class PlayerConfigurator : MonoBehaviour
     //[SerializeField]
     //private string m_Address;
 
-    [SerializeField]
-    private AssetReference m_HatAssetReference;
+    // AssetReference struct will change to prevent the selection of wrong type of assets
+    //[SerializeField]
+    //private AssetReference m_HatAssetReference;
+
+    [SerializeField] AssetReferenceGameObject m_HatAssetReference;
 
 
     private AsyncOperationHandle<GameObject> m_HatLoadOpHandle;
