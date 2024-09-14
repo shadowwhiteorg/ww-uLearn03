@@ -7,8 +7,11 @@ using System;
 
 public class GameManager : MonoBehaviour
 {
+    //[SerializeField]
+    //private string m_LogoAddress;
+
     [SerializeField]
-    private string m_LogoAddress;
+    private AssetReferenceSprite m_LogoAssetReference;
 
     private AsyncOperationHandle<Sprite> m_LogoLoadOpHadle;
 
@@ -46,7 +49,11 @@ public class GameManager : MonoBehaviour
         //    m_gameLogoImage.sprite = logoResourceRequest.asset as Sprite;
         //};
 
-        m_LogoLoadOpHadle = Addressables.LoadAssetAsync<Sprite>(m_LogoAddress);
+
+        if (!m_LogoAssetReference.RuntimeKeyIsValid())
+            return;
+
+        m_LogoLoadOpHadle = Addressables.LoadAssetAsync<Sprite>(m_LogoAssetReference);
 
         m_LogoLoadOpHadle.Completed += OnLogoLoadComplete;
 
