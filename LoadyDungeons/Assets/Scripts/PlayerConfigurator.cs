@@ -12,8 +12,13 @@ public class PlayerConfigurator : MonoBehaviour
 
     private ResourceRequest m_HatLoadingRequest;
 
+    // following variable may cause future priblems like typos so we will replace it with AssetReference
+    //[SerializeField]
+    //private string m_Address;
+
     [SerializeField]
-    private string m_Address;
+    private AssetReference m_HatAssetReference;
+
 
     private AsyncOperationHandle<GameObject> m_HatLoadOpHandle;
 
@@ -28,7 +33,14 @@ public class PlayerConfigurator : MonoBehaviour
         //m_HatLoadingRequest = Resources.LoadAsync(hatKey);
         //m_HatLoadingRequest.completed += OnHatLoaded;
 
-        m_HatLoadOpHandle = Addressables.LoadAssetAsync<GameObject>(m_Address);
+        // due to m_address variable has removed, this line is obsolute
+        //m_HatLoadOpHandle = Addressables.LoadAssetAsync<GameObject>(m_Address);
+
+        if (!m_HatAssetReference.RuntimeKeyIsValid())
+            return;
+
+        m_HatLoadOpHandle = m_HatAssetReference.LoadAssetAsync<GameObject>();
+
         m_HatLoadOpHandle.Completed += OnHatLoadComplete;
 
     }
