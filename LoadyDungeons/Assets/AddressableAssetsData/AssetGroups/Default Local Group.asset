@@ -18,7 +18,7 @@ MonoBehaviour:
   m_GUID: 5b27872ad08b21242985dbc8320c1082
   m_SerializeEntries:
   - m_GUID: b53baa10142cbb346a47ab071d32889a
-    m_Address: Hat_BunnyEars
+    m_Address: Hat00
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
