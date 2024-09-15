@@ -3,6 +3,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Collections.Generic;
 using UnityEngine.ResourceManagement.ResourceLocations;
+using System.Reflection;
 
 // Used for the Hat selection logic
 public class PlayerConfigurator : MonoBehaviour
@@ -30,78 +31,100 @@ public class PlayerConfigurator : MonoBehaviour
     //private List<string> m_Keys = new List<string>() { "Hats", "Seasonal" };
     private List<string> m_Keys = new List<string>() { "Hats", "Fancy" };
 
-    // we will use async operation handle as a list.
     //private AsyncOperationHandle<GameObject> m_HatLoadOpHandle;
+    // we will use async operation handle as a list.
+    //private AsyncOperationHandle<IList<GameObject>> m_HatsLoadOpHandle;
 
-    private AsyncOperationHandle<IList<IResourceLocation>> m_HatsLocationOpHandle;
+    private AsyncOperationHandle<IList<IResourceLocation>> m_HatsLocationsOpHandle;
     private AsyncOperationHandle<GameObject> m_HatLoadOpHandle;
 
 
-    private AsyncOperationHandle<IList<GameObject>> m_HatsLoadOperationHandle;
 
     void Start()
     {
         //SetHat(string.Format("Hat{0:00}", GameManager.s_ActiveHat));
         //LoadInRandomHat();
 
-        //m_HatsLoadOperationHandle = Addressables.LoadAssetsAsync<GameObject>(m_Keys, null, Addressables.MergeMode.Intersection);
-        //m_HatsLoadOperationHandle.Completed += OnHatsLoadComplete;
+        //m_HatsLoadOpHandle = Addressables.LoadAssetsAsync<GameObject>(m_Keys, null, Addressables.MergeMode.Intersection);
+        //m_HatsLoadOpHandle.Completed += OnHatsLoadComplete;
 
-        m_HatsLocationOpHandle = Addressables.LoadResourceLocationsAsync(m_Keys, Addressables.MergeMode.Intersection);
-        // Burada Kaldik
-        m_HatsLoadOperationHandle += OnHatLocationsLoadComplete;
+        m_HatsLocationsOpHandle = Addressables.LoadResourceLocationsAsync(m_Keys, Addressables.MergeMode.Intersection);
+        m_HatsLocationsOpHandle.Completed += OnHatLocationsLoadComplete;
 
     }
 
-    private void OnHatsLoadComplete(AsyncOperationHandle<IList<GameObject>> handle)
+    private void OnHatLocationsLoadComplete(AsyncOperationHandle<IList<IResourceLocation>> handle)
     {
-        Debug.Log("Async Operation Handle Status: " + m_HatsLoadOperationHandle.Status);
-
-        if(m_HatsLoadOperationHandle.Status == AsyncOperationStatus.Succeeded)
+        IList<IResourceLocation> results = handle.Result;
+        for (int i = 0; i < results.Count; i++)
         {
-            IList<GameObject> results = handle.Result;
-            for (int i = 0; i < results.Count; i++)
-            {
-                Debug.Log("Hat: " + results[i].name);
-
-                
-            }
-            LoadInRandomHat(results);
+            Debug.Log("Hat: " + results[i].PrimaryKey);
         }
     }
+
+    //private void OnHatsLoadComplete(AsyncOperationHandle<IList<GameObject>> handle)
+    //{
+    //    Debug.Log("Async Operation Handle Status: " + m_HatsLoadOpHandle.Status);
+
+    //    if(m_HatsLoadOpHandle.Status == AsyncOperationStatus.Succeeded)
+    //    {
+    //        IList<GameObject> results = handle.Result;
+    //        for (int i = 0; i < results.Count; i++)
+    //        {
+    //            Debug.Log("Hat: " + results[i].name);
+
+
+    //        }
+    //        LoadInRandomHat(results);
+    //    }
+    //}
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            Destroy(m_HatInstance);
-            Addressables.ReleaseInstance(m_HatLoadOpHandle);
+        //if (Input.GetMouseButtonUp(1))
+        //{
+        //    Destroy(m_HatInstance);
+        //    Addressables.ReleaseInstance(m_HatLoadOpHandle);
 
-            LoadInRandomHat();
-        }
+        //    LoadInRandomHat();
+        //}
         if (Input.GetMouseButtonUp(1))
         {
             Destroy(m_HatInstance);
 
-            LoadInRandomHat(m_HatsLoadOperationHandle.Result);
+            //LoadInRandomHat(m_HatsLoadOpHandle.Result);
+
+            Addressables.Release(m_HatLoadOpHandle);
+
+            LoadInRandomHat(m_HatsLocationsOpHandle.Result);
+
         }
     }
 
 
-    private void LoadInRandomHat()
-    {
-        int randomIndex = Random.Range(0, 6);
-        string hatAddress = string.Format("Hat{0:00}", randomIndex);
+    //private void LoadInRandomHat()
+    //{
+    //    int randomIndex = Random.Range(0, 6);
+    //    string hatAddress = string.Format("Hat{0:00}", randomIndex);
 
-        m_HatLoadOpHandle = Addressables.LoadAssetAsync<GameObject>(hatAddress);
+    //    m_HatLoadOpHandle = Addressables.LoadAssetAsync<GameObject>(hatAddress);
+    //    m_HatLoadOpHandle.Completed += OnHatLoadComplete;
+    //}
+
+    //private void LoadInRandomHat(IList<GameObject> prefabs)
+    //{
+    //    int randomIndex = Random.Range(0, prefabs.Count);
+    //    GameObject randomHatPrefab = prefabs[randomIndex];
+    //    m_HatInstance = Instantiate(randomHatPrefab, m_HatAnchor);
+    //}
+
+    private void LoadInRandomHat(IList<IResourceLocation> resourceLocations)
+    {
+        int randomIndex = Random.Range(0, resourceLocations.Count);
+        IResourceLocation randomHatPrefab = resourceLocations[randomIndex];
+
+        m_HatLoadOpHandle = Addressables.LoadAssetAsync<GameObject>(randomHatPrefab);
         m_HatLoadOpHandle.Completed += OnHatLoadComplete;
-    }
-
-    private void LoadInRandomHat(IList<GameObject> prefabs)
-    {
-        int randomIndex = Random.Range(0, prefabs.Count);
-        GameObject randomHatPrefab = prefabs[randomIndex];
-        m_HatInstance = Instantiate(randomHatPrefab, m_HatAnchor);
     }
 
     //public void SetHat(string hatKey)
@@ -129,7 +152,12 @@ public class PlayerConfigurator : MonoBehaviour
         //if (handle.Status == AsyncOperationStatus.Succeeded)
         //    Instantiate(handle.Result, m_HatAnchor);
 
-        m_HatInstance = Instantiate(handle.Result, m_HatAnchor);
+        //m_HatInstance = Instantiate(handle.Result, m_HatAnchor);
+
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+        {
+            m_HatInstance = Instantiate(handle.Result, m_HatAnchor);
+        }
 
 
     }
@@ -144,8 +172,12 @@ public class PlayerConfigurator : MonoBehaviour
         //if (m_HatLoadingRequest != null)
         //    m_HatLoadingRequest.completed -= OnHatLoaded;
 
+        //m_HatLoadOpHandle.Completed -= OnHatLoadComplete;
+        //m_HatsLoadOpHandle.Completed -= OnHatsLoadComplete;
+
         m_HatLoadOpHandle.Completed -= OnHatLoadComplete;
-        m_HatsLoadOperationHandle.Completed -= OnHatsLoadComplete;
+        m_HatsLocationsOpHandle.Completed -= OnHatLocationsLoadComplete;
+
 
     }
 }
