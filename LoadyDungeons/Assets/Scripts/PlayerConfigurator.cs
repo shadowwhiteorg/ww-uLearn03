@@ -46,10 +46,9 @@ public class PlayerConfigurator : MonoBehaviour
         //LoadInRandomHat();
 
         //m_HatsLoadOpHandle = Addressables.LoadAssetsAsync<GameObject>(m_Keys, null, Addressables.MergeMode.Intersection);
-        //m_HatsLoadOpHandle.Completed += OnHatsLoadComplete;
-
         m_HatsLocationsOpHandle = Addressables.LoadResourceLocationsAsync(m_Keys, Addressables.MergeMode.Intersection);
         m_HatsLocationsOpHandle.Completed += OnHatLocationsLoadComplete;
+        LoadInRandomHat(m_HatsLocationsOpHandle.Result);
 
     }
 
@@ -62,22 +61,6 @@ public class PlayerConfigurator : MonoBehaviour
         }
     }
 
-    //private void OnHatsLoadComplete(AsyncOperationHandle<IList<GameObject>> handle)
-    //{
-    //    Debug.Log("Async Operation Handle Status: " + m_HatsLoadOpHandle.Status);
-
-    //    if(m_HatsLoadOpHandle.Status == AsyncOperationStatus.Succeeded)
-    //    {
-    //        IList<GameObject> results = handle.Result;
-    //        for (int i = 0; i < results.Count; i++)
-    //        {
-    //            Debug.Log("Hat: " + results[i].name);
-
-
-    //        }
-    //        LoadInRandomHat(results);
-    //    }
-    //}
 
     private void Update()
     {
@@ -102,22 +85,6 @@ public class PlayerConfigurator : MonoBehaviour
     }
 
 
-    //private void LoadInRandomHat()
-    //{
-    //    int randomIndex = Random.Range(0, 6);
-    //    string hatAddress = string.Format("Hat{0:00}", randomIndex);
-
-    //    m_HatLoadOpHandle = Addressables.LoadAssetAsync<GameObject>(hatAddress);
-    //    m_HatLoadOpHandle.Completed += OnHatLoadComplete;
-    //}
-
-    //private void LoadInRandomHat(IList<GameObject> prefabs)
-    //{
-    //    int randomIndex = Random.Range(0, prefabs.Count);
-    //    GameObject randomHatPrefab = prefabs[randomIndex];
-    //    m_HatInstance = Instantiate(randomHatPrefab, m_HatAnchor);
-    //}
-
     private void LoadInRandomHat(IList<IResourceLocation> resourceLocations)
     {
         int randomIndex = Random.Range(0, resourceLocations.Count);
@@ -127,22 +94,6 @@ public class PlayerConfigurator : MonoBehaviour
         m_HatLoadOpHandle.Completed += OnHatLoadComplete;
     }
 
-    //public void SetHat(string hatKey)
-    //{
-    //    /// we will change the following lines to replace the resource loading system with the addressable system
-    //    //m_HatLoadingRequest = Resources.LoadAsync(hatKey);
-    //    //m_HatLoadingRequest.completed += OnHatLoaded;
-
-    //    // due to m_address variable has removed, this line is obsolute
-    //    //m_HatLoadOpHandle = Addressables.LoadAssetAsync<GameObject>(m_Address);
-
-    //    if (!m_HatAssetReference.RuntimeKeyIsValid())
-    //        return;
-
-    //    m_HatLoadOpHandle = m_HatAssetReference.LoadAssetAsync<GameObject>();
-
-    //    m_HatLoadOpHandle.Completed += OnHatLoadComplete;
-    //}
 
     private void OnHatLoadComplete(AsyncOperationHandle<GameObject> handle)
     {
@@ -157,7 +108,6 @@ public class PlayerConfigurator : MonoBehaviour
         {
             m_HatInstance = Instantiate(handle.Result, m_HatAnchor);
         }
-
 
     }
 
@@ -179,4 +129,55 @@ public class PlayerConfigurator : MonoBehaviour
 
 
     }
+
+
+    //private void OnHatsLoadComplete(AsyncOperationHandle<IList<GameObject>> handle)
+    //{
+    //    Debug.Log("Async Operation Handle Status: " + m_HatsLoadOpHandle.Status);
+
+    //    if(m_HatsLoadOpHandle.Status == AsyncOperationStatus.Succeeded)
+    //    {
+    //        IList<GameObject> results = handle.Result;
+    //        for (int i = 0; i < results.Count; i++)
+    //        {
+    //            Debug.Log("Hat: " + results[i].name);
+
+
+    //        }
+    //        LoadInRandomHat(results);
+    //    }
+    //}
+
+    //public void SetHat(string hatKey)
+    //{
+    //    /// we will change the following lines to replace the resource loading system with the addressable system
+    //    //m_HatLoadingRequest = Resources.LoadAsync(hatKey);
+    //    //m_HatLoadingRequest.completed += OnHatLoaded;
+
+    //    // due to m_address variable has removed, this line is obsolute
+    //    //m_HatLoadOpHandle = Addressables.LoadAssetAsync<GameObject>(m_Address);
+
+    //    if (!m_HatAssetReference.RuntimeKeyIsValid())
+    //        return;
+
+    //    m_HatLoadOpHandle = m_HatAssetReference.LoadAssetAsync<GameObject>();
+
+    //    m_HatLoadOpHandle.Completed += OnHatLoadComplete;
+    //}
+
+    //private void LoadInRandomHat()
+    //{
+    //    int randomIndex = Random.Range(0, 6);
+    //    string hatAddress = string.Format("Hat{0:00}", randomIndex);
+
+    //    m_HatLoadOpHandle = Addressables.LoadAssetAsync<GameObject>(hatAddress);
+    //    m_HatLoadOpHandle.Completed += OnHatLoadComplete;
+    //}
+
+    //private void LoadInRandomHat(IList<GameObject> prefabs)
+    //{
+    //    int randomIndex = Random.Range(0, prefabs.Count);
+    //    GameObject randomHatPrefab = prefabs[randomIndex];
+    //    m_HatInstance = Instantiate(randomHatPrefab, m_HatAnchor);
+    //}
 }
