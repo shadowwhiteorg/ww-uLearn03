@@ -142,7 +142,6 @@ public class PlayerConfigurator : MonoBehaviour
     //    m_HatLoadOpHandle = m_HatAssetReference.LoadAssetAsync<GameObject>();
 
     //    m_HatLoadOpHandle.Completed += OnHatLoadComplete;
-
     //}
 
     private void OnHatLoadComplete(AsyncOperationHandle<GameObject> handle)
